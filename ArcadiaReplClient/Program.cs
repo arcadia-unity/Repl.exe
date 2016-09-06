@@ -129,6 +129,9 @@ namespace ArcadiaReplClient
 				running = false;
 			};
 
+			if (Environment.GetEnvironmentVariable("CLOJURE_LOAD_PATH") == null)
+				Environment.SetEnvironmentVariable("CLOJURE_LOAD_PATH", Path.Combine("..", "Source"));
+
 			var unitySocket = new UdpClient();
 			unitySocket.Connect("localhost", 11211);
 			unitySocket.Client.ReceiveTimeout = 500;
