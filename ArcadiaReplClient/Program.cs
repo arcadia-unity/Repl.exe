@@ -14,6 +14,17 @@ namespace ArcadiaReplClient
 		static Thread cliThread;
 		static bool running = true;
 
+		public static bool OnWindows()
+		{
+			return Environment.OSVersion.Platform != PlatformID.MacOSX &&
+				   Environment.OSVersion.Platform != PlatformID.Unix;
+		}
+
+		public static bool OldCLR()
+		{
+			return Environment.Version.Major <= 2;
+		}
+
 		public static void UdpSend(UdpClient s, object str)
 		{
 			var bs = Encoding.UTF8.GetBytes(str.ToString());
@@ -22,6 +33,10 @@ namespace ArcadiaReplClient
 
 		public static string ReadLine()
 		{
+			// built in implementation is fine on these platforms, use it
+			if (OnWindows() || !OldCLR())
+				return Console.ReadLine();
+
 			// old mono's Console.ReadLine does not display first character sometimes
 			// so here's our own Console.ReadLine -nasser
 			var sb = new StringBuilder("");
