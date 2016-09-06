@@ -114,7 +114,8 @@ namespace ArcadiaReplClient
 				running = false;
 			};
 
-			var unitySocket = new UdpClient("localhost", 11211);
+			var unitySocket = new UdpClient();
+			unitySocket.Connect("localhost", 11211);
 			unitySocket.Client.ReceiveTimeout = 500;
 			socketThread.Start(unitySocket);
 			cliThread.Start(unitySocket);
